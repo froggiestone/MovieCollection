@@ -1,0 +1,251 @@
+﻿<Page
+    x:Class="MovieCollection.Views.CollectionSeriesDetails"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:MovieCollection.Views"
+    xmlns:templates="using:MovieCollection.Templates"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    Loaded="Page_Loaded"
+    mc:Ignorable="d">
+    <Page.Resources>
+        <Storyboard x:Name="FadeinBackdropGrid">
+            <DoubleAnimation From="0" To="1" Storyboard.TargetName="ImageBrushContainer"
+                             Duration="0:0:0.3"
+                             Storyboard.TargetProperty="Opacity"  />
+        </Storyboard>
+        <DataTemplate x:Name="EpisodeTemplate" x:Key="EpisodeTemplate">
+            <templates:EpisodeTemplate />
+        </DataTemplate>
+    </Page.Resources>
+
+    <Grid x:Name="Root">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="1*" />
+        </Grid.RowDefinitions>
+        
+        <Grid x:Name="HeaderRoot" Grid.Row="0">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="1*" />
+                        <RowDefinition Height="2*" />
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="1*" />
+                        <ColumnDefinition Width="2*" />
+                    </Grid.ColumnDefinitions>
+                    <Grid Grid.RowSpan="2" Grid.Column="0" Canvas.ZIndex="10">
+                        <StackPanel Orientation="Vertical" HorizontalAlignment="Stretch" VerticalAlignment="Center">
+                            <Image Margin="20,0,10,0" 
+                                   x:Name="PhotoImage"
+                                   Opacity="0"
+                                   Canvas.ZIndex="10" 
+                                   />
+
+                            <TextBlock Text="{Binding tagline}" 
+                                       Style="{ThemeResource MediumTitleTextBlock}"
+                                       Margin="20"
+                                       HorizontalAlignment="Center"
+                                       FontStyle="Italic"
+                                       />
+                        </StackPanel>
+                    </Grid>
+
+                    <Grid Grid.Row="0" Grid.ColumnSpan="2">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="1*" />
+                                <ColumnDefinition Width="2*" />
+                            </Grid.ColumnDefinitions>
+                            <Grid Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Center">
+                                <Button Background="Transparent" x:Name="PlayButton" Click="PlayButton_Click">
+                                    <Grid>
+                                        <Ellipse Canvas.ZIndex="2" Stroke="White" StrokeThickness="2"  Height="100" Width="100"  />
+                                        <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center" Canvas.ZIndex="3" Text="Play" />
+                                        <FlyoutBase.AttachedFlyout>
+                                            <Flyout x:Name="PickFileFlyout">
+                                                <Grid MaxWidth="300">
+                                                    <StackPanel Orientation="Vertical">
+                                                        <TextBlock x:Name="LaunchMessage" 
+                                                                   Margin="0,0,0,5" 
+                                                                   Style="{ThemeResource BaseTextBlockStyle}" 
+                                                                   />
+                                                        <Button HorizontalAlignment="Center" Click="FilePickerButton_Click" x:Name="FilePickerButton" Content="Select file location" />
+                                                    </StackPanel>
+                                                </Grid>
+                                            </Flyout>
+                                        </FlyoutBase.AttachedFlyout>
+                                    </Grid>
+
+                                </Button>
+
+                            </Grid>
+                            <Grid Grid.Column="1" VerticalAlignment="Bottom" Padding="10">
+                                <StackPanel Orientation="Vertical" x:Name="TitleHeader">
+                                    <TextBlock x:Name="title" Style="{ThemeResource LargeTitleTextBlock}" Text="{Binding name}" />
+                                    <TextBlock Style="{ThemeResource MediumTitleTextBlock}" x:Name="ReleaseDate" Text="release date" />
+                                    <StackPanel.Transitions>
+                                        <TransitionCollection>
+                                            <EntranceThemeTransition FromHorizontalOffset="0" FromVerticalOffset="80" />
+                                        </TransitionCollection>
+                                    </StackPanel.Transitions>
+                                </StackPanel>
+
+                            </Grid>
+
+                            <Grid.Background>
+                                <SolidColorBrush x:Name="Overlay" Color="Black" Opacity="0.4" />
+                            </Grid.Background>
+
+                        </Grid>
+                        
+
+                    </Grid>
+            <Grid x:Name="bottom" Grid.Row="2" Grid.ColumnSpan="2" Background="Black">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="1*" />
+                    <ColumnDefinition Width="2*" />
+                </Grid.ColumnDefinitions>
+
+                <Grid Grid.Column="1" Padding="10">
+                    <Pivot x:Name="SeasonsPivot">
+                        <PivotItem>
+                            <PivotItem.Header>
+                                <TextBlock Text="Info" />
+                            </PivotItem.Header>
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="auto" />
+                                    <RowDefinition Height="auto" />
+                                    <RowDefinition Height="auto" />
+                                    <RowDefinition Height="auto" />
+                                </Grid.RowDefinitions>
+                                <Grid Grid.Row="0">
+                                    <TextBlock Style="{ThemeResource SmallTitleTextBlock}" Text="Cast" />
+                                </Grid>
+                                <Grid Grid.Row="1" Margin="0,10,0,10">
+                                    <ListView x:Name="CastListView" ItemsSource="{Binding cast}">
+                                        <ListView.ItemTemplate>
+                                            <DataTemplate>
+                                                <Grid>
+                                                    <Grid.RowDefinitions>
+                                                        <RowDefinition Height="70" />
+                                                        <RowDefinition Height="auto" />
+                                                    </Grid.RowDefinitions>
+                                                    <Grid.ColumnDefinitions>
+                                                        <ColumnDefinition MaxWidth="100" />
+                                                    </Grid.ColumnDefinitions>
+                                                    <Grid Grid.Row="0" Grid.Column="0">
+                                                        <Ellipse Height="70" Width="70">
+                                                            <Ellipse.Fill>
+                                                                <ImageBrush Stretch="UniformToFill" ImageSource="{Binding portrait}" />
+                                                            </Ellipse.Fill>
+                                                        </Ellipse>
+                                                    </Grid>
+                                                    <Grid Grid.Row="1" Grid.Column="0">
+                                                        <StackPanel Orientation="Vertical">
+                                                            <TextBlock Style="{ThemeResource BaseTextBlockStyle}" HorizontalAlignment="Center" Text="{Binding name}" />
+                                                            <TextBlock Style="{ThemeResource BaseTextBlockStyle}" FontStyle="Italic" HorizontalAlignment="Center" Text="{Binding character}" />
+                                                        </StackPanel>
+
+                                                    </Grid>
+                                                </Grid>
+
+                                            </DataTemplate>
+                                        </ListView.ItemTemplate>
+                                        <ListView.Style>
+                                            <!-- Default style for Windows.UI.Xaml.Controls.ListView -->
+                                            <Style TargetType="ListView">
+                                                <Setter Property="IsTabStop" Value="False" />
+                                                <Setter Property="TabNavigation" Value="Once" />
+                                                <Setter Property="IsSwipeEnabled" Value="True" />
+                                                <Setter Property="ScrollViewer.HorizontalScrollBarVisibility" Value="Hidden"/>
+                                                <Setter Property="ScrollViewer.VerticalScrollBarVisibility" Value="Disabled"/>
+                                                <Setter Property="ScrollViewer.HorizontalScrollMode" Value="Enabled" />
+                                                <Setter Property="ScrollViewer.IsHorizontalRailEnabled" Value="False" />
+                                                <Setter Property="ScrollViewer.VerticalScrollMode" Value="Disabled" />
+                                                <Setter Property="ScrollViewer.IsVerticalRailEnabled" Value="True" />
+                                                <Setter Property="ScrollViewer.ZoomMode" Value="Disabled" />
+                                                <Setter Property="ScrollViewer.IsDeferredScrollingEnabled" Value="False" />
+                                                <Setter Property="ScrollViewer.BringIntoViewOnFocusChange" Value="True" />
+                                                <Setter Property="ItemContainerTransitions">
+                                                    <Setter.Value>
+                                                        <TransitionCollection>
+                                                            <AddDeleteThemeTransition />
+                                                            <ContentThemeTransition />
+                                                            <ReorderThemeTransition />
+                                                            <EntranceThemeTransition IsStaggeringEnabled="True" />
+                                                        </TransitionCollection>
+                                                    </Setter.Value>
+                                                </Setter>
+                                                <Setter Property="ItemsPanel">
+                                                    <Setter.Value>
+                                                        <ItemsPanelTemplate>
+                                                            <ItemsStackPanel Orientation="Horizontal" />
+                                                        </ItemsPanelTemplate>
+                                                    </Setter.Value>
+                                                </Setter>
+                                                <Setter Property="Template">
+                                                    <Setter.Value>
+                                                        <ControlTemplate TargetType="ListView">
+                                                            <Border BorderBrush="{TemplateBinding BorderBrush}"
+                Background="{TemplateBinding Background}"
+                BorderThickness="{TemplateBinding BorderThickness}">
+                                                                <ScrollViewer x:Name="ScrollViewer"
+                        TabNavigation="{TemplateBinding TabNavigation}"
+                        HorizontalScrollMode="{TemplateBinding ScrollViewer.HorizontalScrollMode}"
+                        HorizontalScrollBarVisibility="{TemplateBinding ScrollViewer.HorizontalScrollBarVisibility}"
+                        IsHorizontalScrollChainingEnabled="{TemplateBinding ScrollViewer.IsHorizontalScrollChainingEnabled}"
+                        VerticalScrollMode="{TemplateBinding ScrollViewer.VerticalScrollMode}"
+                        VerticalScrollBarVisibility="{TemplateBinding ScrollViewer.VerticalScrollBarVisibility}"
+                        IsVerticalScrollChainingEnabled="{TemplateBinding ScrollViewer.IsVerticalScrollChainingEnabled}"
+                        IsHorizontalRailEnabled="{TemplateBinding ScrollViewer.IsHorizontalRailEnabled}"
+                        IsVerticalRailEnabled="{TemplateBinding ScrollViewer.IsVerticalRailEnabled}"
+                        ZoomMode="{TemplateBinding ScrollViewer.ZoomMode}"
+                        IsDeferredScrollingEnabled="{TemplateBinding ScrollViewer.IsDeferredScrollingEnabled}"
+                        BringIntoViewOnFocusChange="{TemplateBinding ScrollViewer.BringIntoViewOnFocusChange}"
+                        AutomationProperties.AccessibilityView="Raw">
+                                                                    <ItemsPresenter
+                Header="{TemplateBinding Header}"
+                HeaderTemplate="{TemplateBinding HeaderTemplate}"
+                HeaderTransitions="{TemplateBinding HeaderTransitions}"
+                Footer="{TemplateBinding Footer}"
+                FooterTemplate="{TemplateBinding FooterTemplate}"
+                FooterTransitions="{TemplateBinding FooterTransitions}"
+                Padding="{TemplateBinding Padding}"/>
+                                                                </ScrollViewer>
+                                                            </Border>
+                                                        </ControlTemplate>
+                                                    </Setter.Value>
+                                                </Setter>
+                                            </Style>
+                                        </ListView.Style>
+                                    </ListView>
+                                </Grid>
+                                <Grid Grid.Row="2">
+                                    <StackPanel Orientation="Vertical" VerticalAlignment="Top">
+                                        <TextBlock Style="{ThemeResource SmallTitleTextBlock}" Text="Plot" />
+                                        <TextBlock x:Name="overview" Style="{ThemeResource BaseTextBlockStyle}" Text="{Binding overview}" />
+                                        <StackPanel.Transitions>
+                                            <TransitionCollection>
+                                                <EntranceThemeTransition FromHorizontalOffset="0" FromVerticalOffset="80" />
+                                            </TransitionCollection>
+                                        </StackPanel.Transitions>
+                                    </StackPanel>
+                                </Grid>
+                            </Grid>
+                        </PivotItem>
+                    </Pivot>
+                </Grid>
+            </Grid>
+            
+                </Grid>
+
+                <Grid Grid.Row="1">
+
+                </Grid>
+        <Grid.Background>
+            <ImageBrush Stretch="UniformToFill" AlignmentY="Top" ImageOpened="BackDrop_ImageOpened" x:Name="BackDrop" />
+        </Grid.Background>
+            </Grid>
+        
+</Page>

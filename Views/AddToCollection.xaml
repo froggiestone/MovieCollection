@@ -1,0 +1,470 @@
+﻿<UserControl
+    x:Class="MovieCollection.Views.AddToCollection"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:MovieCollection.Views"
+    xmlns:helpers="using:MovieCollection.Helpers"
+    xmlns:datamodels="using:MovieCollection.DataModels"
+    xmlns:controls="using:Microsoft.Toolkit.Uwp.UI.Controls"
+    xmlns:templates="using:MovieCollection.Templates"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    d:DesignHeight="300"
+    d:DesignWidth="400">
+    <UserControl.Resources>
+        <helpers:InCollection x:Key="InCollection" />
+        
+        <helpers:SearchBoxTemplateSelector
+                x:Key="SearchBoxTemplateSelector"
+                SearchBoxMovie="{StaticResource SearchResultMovieTemplate}"
+                SearchBoxPerson="{StaticResource SearchResultPersonTemplate}"
+                SearchBoxTv="{StaticResource SearchResultTvTemplate}"
+                />
+        
+        <DataTemplate x:Name="SearchResultPersonTemplate" x:DataType="datamodels:SearchResult">
+            <Grid></Grid>
+        </DataTemplate>
+        <DataTemplate x:Name="SearchResultMovieTemplate" x:DataType="datamodels:SearchResult">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="auto" />
+                    <ColumnDefinition Width="1*" />
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="auto" />
+                </Grid.RowDefinitions>
+
+                <Grid Grid.Column="0" Grid.Row="0" Margin="5,0,5,0">
+                    <Image Stretch="UniformToFill" Width="70" Source="{x:Bind poster}"  />
+                </Grid>
+                <Grid Grid.Column="1" Grid.Row="0">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="auto" />
+                        <RowDefinition Height="auto" />
+                        <RowDefinition Height="auto" />
+                    </Grid.RowDefinitions>
+
+                    <Grid Grid.Row="0">
+                        <StackPanel Orientation="Vertical">
+                            <TextBlock Style="{ThemeResource MediumTitleTextBlock}" Text="{x:Bind original_title}" />
+                            <StackPanel Visibility="{Binding incollection, Converter={StaticResource InCollection}}" Padding="2" Background="{ThemeResource SystemAccentColor}" Orientation="Horizontal">
+                                <TextBlock Text="Already in collection" />
+                            </StackPanel>
+                        </StackPanel>
+
+                    </Grid>
+
+                    <Grid Grid.Row="1">
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Padding="0,0,5,0" Text="{x:Bind release_date}" />
+                            <TextBlock Text="{x:Bind media_type}" />
+                        </StackPanel>
+
+                    </Grid>
+                    <Grid Grid.Row="2">
+                        <TextBlock Text="" />
+                    </Grid>
+                </Grid>
+
+            </Grid>
+        </DataTemplate>
+        <DataTemplate x:Name="SearchResultTvTemplate" x:DataType="datamodels:SearchResult">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="auto" />
+                    <ColumnDefinition Width="1*" />
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="auto" />
+                </Grid.RowDefinitions>
+
+                <Grid Grid.Column="0" Grid.Row="0" Margin="5,0,5,0">
+                    <Image Stretch="UniformToFill" Width="70" Source="{x:Bind poster}"  />
+                </Grid>
+                <Grid Grid.Column="1" Grid.Row="0">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="auto" />
+                        <RowDefinition Height="auto" />
+                        <RowDefinition Height="auto" />
+                    </Grid.RowDefinitions>
+
+                    <Grid Grid.Row="0" >
+                        <StackPanel Orientation="Vertical">
+                            <TextBlock Style="{ThemeResource MediumTitleTextBlock}" Text="{x:Bind original_name}" />
+                            <StackPanel Visibility="{Binding incollection, Converter={StaticResource InCollection}}" Padding="2" Background="{ThemeResource SystemAccentColor}" Orientation="Horizontal">
+                                <TextBlock Text="Already in collection" />
+                            </StackPanel>
+                        </StackPanel>
+                    </Grid>
+
+                    <Grid Grid.Row="1">
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Padding="0,0,5,0" Text="{x:Bind first_air_date}" />
+                            <TextBlock Text="{x:Bind media_type}" />
+                        </StackPanel>
+                    </Grid>
+                    <Grid Grid.Row="2">
+                        <TextBlock Text="" />
+                    </Grid>
+                </Grid>
+
+            </Grid>
+        </DataTemplate>
+
+        <helpers:MovieTvShowPreview
+                x:Key="MovieTvShowPreview"
+                MoviePreview="{StaticResource MoviePreview}"
+                TvShowPreview="{StaticResource TvShowPreview}"
+                />
+        <DataTemplate x:Name="MoviePreview" x:DataType="datamodels:Movie">
+            <Grid>
+                <Grid x:Name="content" Padding="20">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="auto" />
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="1*" />
+                        <ColumnDefinition Width="2*" />
+                    </Grid.ColumnDefinitions>
+                    <Grid Grid.Row="0" Grid.Column="0">
+                        <controls:ImageEx Stretch="Uniform"
+                                      Source="{Binding poster}" />
+                    </Grid>
+                    <Grid Grid.Row="0" Grid.Column="1" Padding="20,0,20,20">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="auto" />
+                            <RowDefinition Height="auto" />
+                            <RowDefinition Height="auto" />
+                            <RowDefinition Height="auto" />
+                            <RowDefinition Height="auto" />
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="1*" />
+                            <ColumnDefinition Width="1*" />
+                        </Grid.ColumnDefinitions>
+
+                        <Grid Grid.Row="0" Grid.ColumnSpan="2">
+                            <TextBlock Style="{ThemeResource LargeTitleTextBlock}" Text="{Binding original_title}" />
+                            
+                        </Grid>
+                        <Grid Grid.Row="1" Grid.Column="0">
+                            <TextBlock Style="{ThemeResource SmallTitleTextBlock}" Text="Release date: " />
+                        </Grid>
+
+                        <Grid Grid.Row="1" Grid.Column="1">
+                            <TextBlock Text="{Binding release_date}" />
+                        </Grid>
+
+                        <Grid Grid.Row="2" Grid.Column="0">
+                            <TextBlock Style="{ThemeResource SmallTitleTextBlock}" Text="Runtime: " />
+                        </Grid>
+                        <Grid Grid.Row="2" Grid.Column="1">
+                            <TextBlock Style="{ThemeResource SmallTitleTextBlock}" Text="{Binding runtime}" />
+                        </Grid>
+                        <Grid Grid.Row="3" Grid.ColumnSpan="2">
+                            <TextBlock Style="{ThemeResource SmallTitleTextBlock}" Text="{Binding overview}" />
+                        </Grid>
+                        <Grid Grid.Row="4" Grid.ColumnSpan="2">
+                            <StackPanel Orientation="Vertical">
+                                <Button x:Name="AddToDataBase" Click="AddToDataBase_Click" Content="Add to database" />
+                                <Button Content="pick file location" x:Name="OpenLocation" Click="OpenLocation_Click" />
+                                <Button Content="launch file" x:Name="launchfile" Click="launchfile_Click" />
+                            </StackPanel>
+                        </Grid>
+
+                    </Grid>
+                    <Grid.Background>
+                        <SolidColorBrush Color="Black" Opacity="0.7" />
+                    </Grid.Background>
+                </Grid>
+                <Grid.Background>
+                    <ImageBrush ImageSource="{Binding backdrop_path}" Stretch="UniformToFill" />
+                </Grid.Background>
+            </Grid>
+        </DataTemplate>
+        
+        <DataTemplate x:Name="TvShowPreview" x:DataType="datamodels:Movie">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="auto" />
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="1*" />
+                    <ColumnDefinition Width="2*" />
+                </Grid.ColumnDefinitions>
+                <Grid Grid.Row="0" Grid.Column="0">
+                    <controls:ImageEx Stretch="Uniform"
+                                      Source="{x:Bind poster}" />
+                </Grid>
+                <Grid Grid.Row="0" Grid.Column="1">
+                    <TextBlock Text="{x:Bind original_name}" />
+                </Grid>
+            </Grid>
+        </DataTemplate>
+    </UserControl.Resources>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto" />
+            <RowDefinition Height="1*" />
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="1*" />
+            <ColumnDefinition Width="auto" />
+        </Grid.ColumnDefinitions>
+        <Grid Grid.Row="0" Grid.Column="0">
+
+            <AutoSuggestBox x:Name="SearchBox"
+                                    HorizontalAlignment="Stretch"
+                                Margin="20"
+                                MinHeight="20"
+                            ItemsSource="{x:Bind mainviewmodel.SeachResults}"
+                            ItemTemplateSelector="{StaticResource SearchBoxTemplateSelector}"
+                            QueryIcon="Find"
+                            SuggestionChosen="SearchBox_SuggestionChosen"
+                            TextChanged="SearchBox_TextChanged">
+
+                <AutoSuggestBox.Style>
+                    <!-- Default Style for AutoSuggestBox -->
+                    <Style TargetType="AutoSuggestBox">
+                        <Setter Property="VerticalAlignment" Value="Top" />
+                        <Setter Property="IsTabStop" Value="False" />
+                        <Setter Property="TextBoxStyle" Value="{StaticResource AutoSuggestBoxTextBoxStyle}" />
+                        <Setter Property="Template">
+                            <Setter.Value>
+                                <ControlTemplate TargetType="AutoSuggestBox">
+                                    <Grid>
+                                        <VisualStateManager.VisualStateGroups>
+                                            <VisualStateGroup x:Name="Orientation">
+                                                <VisualState x:Name="Landscape"/>
+                                                <VisualState x:Name="Portrait"/>
+                                            </VisualStateGroup>
+                                        </VisualStateManager.VisualStateGroups>
+                                        <TextBox x:Name="TextBox"
+                    Style="{TemplateBinding TextBoxStyle}"
+                    PlaceholderText="{TemplateBinding PlaceholderText}"
+                    Header="{TemplateBinding Header}"
+                    Width="{TemplateBinding Width}"
+                    ScrollViewer.BringIntoViewOnFocusChange="False"
+                    Canvas.ZIndex="0"
+                    Margin="0"
+                    DesiredCandidateWindowAlignment="BottomEdge"/>
+                                        <Popup x:Name="SuggestionsPopup">
+                                            <Border x:Name="SuggestionsContainer">
+                                                <Border.RenderTransform>
+                                                    <TranslateTransform x:Name="UpwardTransform"/>
+                                                </Border.RenderTransform>
+                                                <Grid HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+                                                    <helpers:BackDrop x:Name="BackDrop"
+                                                                      BlurAmount="15"
+                                                                      TintAlpha="1"
+                                                                      Canvas.ZIndex="1"
+                                                                      SaturationIntensity="1" />
+                                                    <Grid Style="{ThemeResource ThemeBackground}" HorizontalAlignment="Stretch" 
+                                                                   VerticalAlignment="Stretch"
+                                                                   Opacity="0.5"
+                                                                   Canvas.ZIndex="2" />
+                                                    <ListView
+                                                        Canvas.ZIndex="3"
+                x:Name="SuggestionsList"
+                Background="Transparent"
+                BorderThickness="{ThemeResource AutoSuggestListBorderThemeThickness}"
+                BorderBrush="{ThemeResource SystemControlForegroundChromeHighBrush}"
+                DisplayMemberPath="{TemplateBinding DisplayMemberPath}"
+                IsItemClickEnabled="True"
+                ItemTemplate="{TemplateBinding ItemTemplate}"
+                ItemTemplateSelector="{TemplateBinding ItemTemplateSelector}"
+                ItemContainerStyle="{TemplateBinding ItemContainerStyle}"
+                MaxHeight="500"
+                Margin="{ThemeResource AutoSuggestListMargin}"
+                Padding="{ThemeResource AutoSuggestListPadding}">
+                                                        <ListView.ItemContainerTransitions>
+                                                            <TransitionCollection>
+                                                                <AddDeleteThemeTransition />
+                                                                <ContentThemeTransition />
+                                                                <EntranceThemeTransition IsStaggeringEnabled="True" />
+                                                            </TransitionCollection>
+                                                        </ListView.ItemContainerTransitions>
+                                                       
+                                                    </ListView>
+                                                </Grid>
+                                            </Border>
+                                        </Popup>
+                                    </Grid>
+                                </ControlTemplate>
+                            </Setter.Value>
+                        </Setter>
+                    </Style>
+                </AutoSuggestBox.Style>
+            </AutoSuggestBox>
+        </Grid>
+        <Grid Grid.RowSpan="2" Grid.Column="1">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="auto" />
+                <RowDefinition Height="1*" />
+            </Grid.RowDefinitions>
+            <Grid Grid.Row="0">
+                <TextBlock Text="Recently added." />
+            </Grid>
+            <Grid Grid.Row="1">
+                <ListView x:Name="RecentAddedListView" ItemsSource="{x:Bind mainviewmodel.RecentAddedList}">
+                    <ListView.ItemTemplate>
+                        <DataTemplate>
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="200" />
+                                </Grid.RowDefinitions>
+                                <Grid Grid.Row="0">
+                                    <Image Stretch="Uniform" Source="{Binding poster_thumbnail}" />
+                                </Grid>
+
+                            </Grid>
+
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                    <ListView.Style>
+                        <!-- Default style for Windows.UI.Xaml.Controls.ListView -->
+                        <Style TargetType="ListView">
+                            <Setter Property="IsTabStop" Value="False" />
+                            <Setter Property="TabNavigation" Value="Once" />
+                            <Setter Property="IsSwipeEnabled" Value="True" />
+                            <Setter Property="ScrollViewer.HorizontalScrollBarVisibility" Value="Hidden"/>
+                            <Setter Property="ScrollViewer.VerticalScrollBarVisibility" Value="Visible"/>
+                            <Setter Property="ScrollViewer.HorizontalScrollMode" Value="Disabled" />
+                            <Setter Property="ScrollViewer.IsHorizontalRailEnabled" Value="False" />
+                            <Setter Property="ScrollViewer.VerticalScrollMode" Value="Enabled" />
+                            <Setter Property="ScrollViewer.IsVerticalRailEnabled" Value="True" />
+                            <Setter Property="ScrollViewer.ZoomMode" Value="Disabled" />
+                            <Setter Property="ScrollViewer.IsDeferredScrollingEnabled" Value="False" />
+                            <Setter Property="ScrollViewer.BringIntoViewOnFocusChange" Value="True" />
+                            <Setter Property="ItemContainerTransitions">
+                                <Setter.Value>
+                                    <TransitionCollection>
+                                        <AddDeleteThemeTransition />
+                                        <ContentThemeTransition />
+                                        <ReorderThemeTransition />
+                                        <EntranceThemeTransition IsStaggeringEnabled="True" />
+                                    </TransitionCollection>
+                                </Setter.Value>
+                            </Setter>
+                            <Setter Property="ItemsPanel">
+                                <Setter.Value>
+                                    <ItemsPanelTemplate>
+                                        <ItemsStackPanel Orientation="Vertical" />
+                                    </ItemsPanelTemplate>
+                                </Setter.Value>
+                            </Setter>
+                            <Setter Property="Template">
+                                <Setter.Value>
+                                    <ControlTemplate TargetType="ListView">
+                                        <Border BorderBrush="{TemplateBinding BorderBrush}"
+                Background="{TemplateBinding Background}"
+                BorderThickness="{TemplateBinding BorderThickness}">
+                                            <ScrollViewer x:Name="ScrollViewer"
+                        TabNavigation="{TemplateBinding TabNavigation}"
+                        HorizontalScrollMode="{TemplateBinding ScrollViewer.HorizontalScrollMode}"
+                        HorizontalScrollBarVisibility="{TemplateBinding ScrollViewer.HorizontalScrollBarVisibility}"
+                        IsHorizontalScrollChainingEnabled="{TemplateBinding ScrollViewer.IsHorizontalScrollChainingEnabled}"
+                        VerticalScrollMode="{TemplateBinding ScrollViewer.VerticalScrollMode}"
+                        VerticalScrollBarVisibility="{TemplateBinding ScrollViewer.VerticalScrollBarVisibility}"
+                        IsVerticalScrollChainingEnabled="{TemplateBinding ScrollViewer.IsVerticalScrollChainingEnabled}"
+                        IsHorizontalRailEnabled="{TemplateBinding ScrollViewer.IsHorizontalRailEnabled}"
+                        IsVerticalRailEnabled="{TemplateBinding ScrollViewer.IsVerticalRailEnabled}"
+                        ZoomMode="{TemplateBinding ScrollViewer.ZoomMode}"
+                        IsDeferredScrollingEnabled="{TemplateBinding ScrollViewer.IsDeferredScrollingEnabled}"
+                        BringIntoViewOnFocusChange="{TemplateBinding ScrollViewer.BringIntoViewOnFocusChange}"
+                        AutomationProperties.AccessibilityView="Raw">
+                                                <ItemsPresenter
+                Header="{TemplateBinding Header}"
+                HeaderTemplate="{TemplateBinding HeaderTemplate}"
+                HeaderTransitions="{TemplateBinding HeaderTransitions}"
+                Footer="{TemplateBinding Footer}"
+                FooterTemplate="{TemplateBinding FooterTemplate}"
+                FooterTransitions="{TemplateBinding FooterTransitions}"
+                Padding="{TemplateBinding Padding}"/>
+                                            </ScrollViewer>
+                                        </Border>
+                                    </ControlTemplate>
+                                </Setter.Value>
+                            </Setter>
+                        </Style>
+                    </ListView.Style>
+                </ListView>
+            </Grid>
+        </Grid>
+       
+        <Grid Grid.Row="1" Grid.Column="0">
+            <ListView ItemTemplateSelector="{StaticResource MovieTvShowPreview}" 
+                      ItemsSource="{x:Bind mainviewmodel.AddToDataBaseList}">
+                <ListView.Resources>
+                    <Style TargetType="ListViewItem">
+                        <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+                        <Setter Property="Template">
+                            <Setter.Value>
+                                <ControlTemplate TargetType="ListViewItem">
+                                    <Border x:Name="OuterContainer">
+                                        <VisualStateManager.VisualStateGroups>
+                                            <VisualStateGroup x:Name="CommonStates">
+                                                <VisualState x:Name="Normal" />
+                                                <VisualState x:Name="Pressed"/>
+                                                <VisualState x:Name="CheckboxPressed"/>
+                                                <VisualState x:Name="Disabled"/>
+
+                                            </VisualStateGroup>
+                                            <VisualStateGroup x:Name="SelectionStates">
+                                                <VisualState x:Name="Unselected" />
+                                                <VisualState x:Name="Selected"/>
+                                                <VisualState x:Name="SelectedUnfocused"/>
+                                            </VisualStateGroup>
+                                            <VisualStateGroup x:Name="DataVirtualizationStates">
+                                                <VisualState x:Name="DataAvailable" />
+                                                <VisualState x:Name="DataPlaceholder"/>
+                                            </VisualStateGroup>
+                                            <VisualStateGroup x:Name="MultiSelectStates">
+                                                <VisualState x:Name="NoMultiSelect" />
+                                                <VisualState x:Name="ListMultiSelect"/>
+                                                <VisualState x:Name="GridMultiSelect"/>
+                                            </VisualStateGroup>
+                                            <VisualStateGroup x:Name="ReorderModeStates">
+                                                <VisualState x:Name="ReorderEnabled"/>
+                                                <VisualState x:Name="Reorderable"/>
+                                                <VisualState x:Name="ReorderDisabled" />
+                                            </VisualStateGroup>
+                                            <VisualStateGroup x:Name="ReorderHintStates">
+                                                <VisualState x:Name="NoReorderHint" />
+                                                <VisualState x:Name="BottomReorderHint"/>
+                                                <VisualState x:Name="RightReorderHint"/>
+                                                <VisualState x:Name="TopReorderHint"/>
+                                                <VisualState x:Name="LeftReorderHint"/>
+                                            </VisualStateGroup>
+                                        </VisualStateManager.VisualStateGroups>
+                                        <Grid x:Name="ReorderHintContent" Background="Transparent">
+                                            <Border x:Name="ContentContainer">
+                                                <Border x:Name="ContentBorder"
+                                        Background="{TemplateBinding Background}"
+                                        BorderBrush="{TemplateBinding BorderBrush}"
+                                        BorderThickness="0">
+                                                    <Grid>
+                                                        <ContentPresenter x:Name="contentPresenter"
+                                                          
+                                                          ContentTemplate="{TemplateBinding ContentTemplate}"
+                                                          Content="{TemplateBinding Content}"
+                                                          HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                                          VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
+                                                          Margin="0"
+                                                          Padding="0"                            
+                                                                                      />
+                                                    </Grid>
+                                                </Border>
+                                            </Border>
+                                        </Grid>
+                                    </Border>
+                                </ControlTemplate>
+                            </Setter.Value>
+                        </Setter>
+                    </Style>
+                </ListView.Resources>
+            </ListView>
+        </Grid>
+    </Grid>
+</UserControl>
